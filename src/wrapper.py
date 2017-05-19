@@ -8,8 +8,6 @@ from snc_sensors_publisher.msg import SnCSensorsMsg
 queue = []
 
 def init():
-    dt = datetime.now()
-    start_time = dt.minute*60000000 + dt.second*1000000 + dt.microsecond
     rospy.init_node('snc_events_wrapper')
     topic = rospy.get_param("~events_topic", "/snc_sensors/events")
     rospy.Subscriber(topic, SnCSensorsMsg, eventCallback)

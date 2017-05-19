@@ -19,10 +19,6 @@ def init():
 def eventCallback(msg):
     dt = datetime.now()
 
-    #rospack = rospkg.RosPack()
-    #filename = 'official_log_chair_'+datetime.today().strftime("%d-%m-%Y")+'_'+dt.strftime("%H%M%S")+'.csv'
-    #logs_path = rospack.get_path('snc_events_wrapper') + '/logs/' + filename
-
     for event in msg.sensors:
 
         if event.name == 'No activity in room':

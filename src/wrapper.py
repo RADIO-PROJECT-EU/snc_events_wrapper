@@ -4,17 +4,27 @@ import rospkg
 import roslib, rospy
 from datetime import datetime
 from snc_sensors_publisher.msg import SnCSensorsMsg
+from std_msgs.msg import Bool
 
 queue = []
+chair_on_spot = False
 
 def init():
     rospy.init_node('snc_events_wrapper')
     topic = rospy.get_param("~events_topic", "/snc_sensors/events")
+    tv_chair_topic = rospy.get_param("~tv_chair_topic", "room_status_publisher/tv_chair")
     rospy.Subscriber(topic, SnCSensorsMsg, eventCallback)
+    rospy.Subscriber(topic, Bool, tv_chair_callback)
     while not rospy.is_shutdown():
         rospy.spin()
 
+def tv_chair_callback(msg):
+    global chair_on_spot
+    tv_chair_topic = msg.data
+
+
 def eventCallback(msg):
+    global chair_on_spot
     dt = datetime.now()
 
     for event in msg.sensors:
@@ -43,7 +53,7 @@ def eventCallback(msg):
                 with open(logs_path,'ab+') as f:
                     f.write("Coming in the room timestamp\n")
                     f.write(event.status+'\n')
-        elif 'Watching TV' in event.name:
+        elif 'Watching TV' in event.name and chair_on_spot:
             if not ('Watching TV on chair' in queue or 'Watching TV on sofa' in queue):
                 rospack = rospkg.RosPack()
                 filename = 'official_log_tv_'+datetime.today().strftime("%d-%m-%Y")+'_'+dt.strftime("%H%M%S")+'.csv'

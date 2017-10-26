@@ -8,14 +8,19 @@ from std_msgs.msg import Bool
 
 queue = []
 status_queue = []
-chair_on_spot = False
+chair_on_spot = True
+use_ble = False
 
 def init():
+    global use_ble, chair_on_spot
     rospy.init_node('snc_events_wrapper')
     topic = rospy.get_param("~events_topic", "/snc_sensors/events")
     tv_chair_topic = rospy.get_param("~tv_chair_topic", "room_status_publisher/tv_chair")
+    use_ble = rospy.get_param("~use_ble", False)
+    if use_ble:
+        chair_on_spot = False
+        rospy.Subscriber(tv_chair_topic, Bool, tv_chair_callback)
     rospy.Subscriber(topic, SnCSensorsMsg, eventCallback)
-    rospy.Subscriber(tv_chair_topic, Bool, tv_chair_callback)
     while not rospy.is_shutdown():
         rospy.spin()
 

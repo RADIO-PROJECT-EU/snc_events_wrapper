@@ -1,3 +1,4 @@
 events_topic: '/snc_sensors/events'
 tv_chair_topic: 'room_status_publisher/tv_chair'
+use_ble: True
 

@@ -35,8 +35,8 @@ def eventCallback(msg):
     for event in msg.sensors:
         dt = datetime.now()
 
-        if event.name == 'No activity':
-            if not ('No activity' in queue) or not (event.status in status_queue):
+        if event.name == 'No activity in room':
+            if not ('No activity in room' in queue) or not (event.status in status_queue):
                 rospack = rospkg.RosPack()
                 filename = 'official_log_presence_'+datetime.today().strftime("%d-%m-%Y")+'_'+dt.strftime("%H%M%S%f")+'.csv'
                 logs_path = rospack.get_path('snc_events_wrapper') + '/logs/' + filename

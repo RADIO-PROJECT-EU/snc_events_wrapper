@@ -65,9 +65,9 @@ def eventCallback(msg):
                 with open(logs_path,'ab+') as f:
                     f.write("Coming in the room timestamp\n")
                     f.write(event.status+'\n')
-        elif ('Watching TV' in event.name):
+        elif ('TV watching' in event.name):
             if chair_on_spot:
-                if not (('Watching TV on chair' in queue or 'Watching TV on sofa' in queue)) or not (event.status in status_queue):
+                if not (('TV watching on chair' in queue or 'TV watching on sofa' in queue)) or not (event.status in status_queue):
                     rospack = rospkg.RosPack()
                     filename = 'official_log_tv_'+datetime.today().strftime("%d-%m-%Y")+'_'+dt.strftime("%H%M%S%f")+'.csv'
                     logs_path = rospack.get_path('snc_events_wrapper') + '/logs/' + filename
